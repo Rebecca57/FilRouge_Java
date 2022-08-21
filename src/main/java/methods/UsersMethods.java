@@ -106,7 +106,6 @@ public class UsersMethods {
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
-			updateUser.setUsername(user.getUsername());
 			updateUser.setFirstname(user.getFirstname());
 			updateUser.setLastname(user.getLastname());
 			updateUser.setEmail(user.getEmail());

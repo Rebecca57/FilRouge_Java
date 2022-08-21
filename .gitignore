@@ -1,0 +1,7 @@
+debug.log
+target/Jpa.war
+target/Jpa/WEB-INF/classes/fr/m2i/models/User.class
+target/Jpa/WEB-INF/classes/methods/UsersMethods.class
+target/classes/fr/m2i/models/User.class
+target/m2e-wtp/web-resources/META-INF/maven/fr.m2i/jpa/pom.properties
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

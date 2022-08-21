@@ -30,10 +30,6 @@ public class User{
 	private Integer id;
 	
 	@Basic
-	@Column(name="username")
-	private String username;
-	
-	@Basic
 	@Column(name="firstname")
 	private String firstname;
 	
@@ -98,14 +94,6 @@ public class User{
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	
-	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	
 	

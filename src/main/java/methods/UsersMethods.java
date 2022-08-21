@@ -33,7 +33,6 @@ public class UsersMethods {
 	//ADD A USER IN TH DB
 	public static ArrayList<User> add(User user) {
 		
-		System.out.println(user);
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
 
@@ -106,7 +105,6 @@ public class UsersMethods {
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
-			updateUser.setUsername(user.getUsername());
 			updateUser.setFirstname(user.getFirstname());
 			updateUser.setLastname(user.getLastname());
 			updateUser.setEmail(user.getEmail());

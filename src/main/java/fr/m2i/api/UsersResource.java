@@ -33,6 +33,13 @@ public class UsersResource {
 		return UsersMethods.display();
 	}
 	
+	@POST
+	@Path("/login")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public User login(User user){
+		return UsersMethods.login(user);
+	}
 	
 	//Récupérer la liste des users
 	@POST

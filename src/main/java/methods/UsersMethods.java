@@ -12,8 +12,30 @@ import fr.m2i.models.User;
 
 public class UsersMethods {
 	
-	@Resource(name="dataSource")
-	private DataSource dataSource;
+	//@Resource(name="dataSource")
+	//private DataSource dataSource;
+	
+
+	public static User login(User userEntered) {
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
+
+		@SuppressWarnings("unchecked")
+		ArrayList<User> listeUsers = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
+				.getResultList();
+
+		em.close();
+		
+		for (User user: listeUsers) {
+			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword())) {
+				System.out.println(user);
+				return user;
+			}
+		}
+		System.out.println("NO USER ");
+		return null;	
+	}
 	
 	public static ArrayList<User> display() {
 		

@@ -1,6 +1,7 @@
 package fr.m2i.models;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -29,7 +30,7 @@ public class Event {
 	
 	@Basic
 	@Column(name="date")
-	private Date dateEvent;
+	private Timestamp dateEvent;
 	
 	@Basic
 	@Column(name="start_time")
@@ -79,11 +80,12 @@ public class Event {
 		this.nameEvent = nameEvent;
 	}
 
-	public Date getDateEvent() {
+
+	public Timestamp getDateEvent() {
 		return dateEvent;
 	}
 
-	public void setDateEvent(Date dateEvent) {
+	public void setDateEvent(Timestamp dateEvent) {
 		this.dateEvent = dateEvent;
 	}
 

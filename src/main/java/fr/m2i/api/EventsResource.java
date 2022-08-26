@@ -1,6 +1,7 @@
 package fr.m2i.api;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,6 +21,16 @@ public class EventsResource {
 	
 	public static ArrayList<Event> listeTaches = new ArrayList<Event>();
 
+	//Récupérer la liste des Events
+	@SuppressWarnings("hiding")
+	@POST
+	@Path("/get")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<Event> get(Event event){
+		return EventsMethods.get(event);
+	}
+	
 	//Récupérer la liste des Events
 	@SuppressWarnings("hiding")
 	@GET

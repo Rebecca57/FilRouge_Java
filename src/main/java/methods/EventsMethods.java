@@ -1,5 +1,4 @@
 package methods;
-
 import java.util.ArrayList;
 
 //import javax.activation.DataSource;
@@ -25,8 +24,35 @@ public class EventsMethods {
 				.getResultList();
 
 		em.close();
-		System.out.println("LISTE USERS");
+		System.out.println("GET ALL EVENTS");
 		System.out.println(eventsList.get(0));
+		return eventsList;
+	}
+	
+	//get the events of a day from a user
+	public static ArrayList<Event> get(Event event) {
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
+		
+		//Integer id =event.getIdCalendar();
+		java.util.Date utilDate  = event.getDateEvent();
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		Integer calendarId = event.getIdCalendar();
+		System.out.println("DATE");
+		System.out.println(utilDate);
+		System.out.println(sqlDate);
+
+		@SuppressWarnings("unchecked")
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events WHERE date=? AND calendar_id=?", Event.class)
+				.setParameter(1,sqlDate)
+				.setParameter(2,calendarId)
+				.getResultList();
+
+		em.close();
+		System.out.println(" GET EVENTS FROM DATE");
+		System.out.println(eventsList);
+		
 		return eventsList;
 	}
 	

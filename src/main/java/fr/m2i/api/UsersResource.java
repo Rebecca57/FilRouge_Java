@@ -71,6 +71,30 @@ public class UsersResource {
 	public ArrayList<User> update(User user,@PathParam("id") Integer id ){
 		return UsersMethods.update(user);
 	}
+	
+	@PUT
+	@Path("/updateFieldActive")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> updateFieldActive(User user){
+		return UsersMethods.updateField(user.getId(),"active",user.getActive());
+	}
+	
+	@PUT
+	@Path("/updateFieldCanShare")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> updateFieldCanShare(User user){
+		return UsersMethods.updateField(user.getId(),"canShare",user.getCanShare());
+	}
+	
+	@PUT
+	@Path("/updateFieldAccessRight")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> updateFieldAccessRight(User user){
+		return UsersMethods.updateFieldAR(user.getId(),user.getAccessRight());
+	}
 
 	/**
 	//Ajouter une tache dans la liste

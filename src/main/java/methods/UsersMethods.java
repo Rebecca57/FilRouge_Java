@@ -160,5 +160,80 @@ public class UsersMethods {
 		
 		return usersList;
 	}
+	
+	
+	
+	//UPDATE AN USER FIELD
+	public static ArrayList<User> updateField(Integer id, String field, boolean value){
+			
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
+
+		//System.out.println(user);
+		//System.out.println(user.getId());
+		//User user = em.find(User.class,user.getId());
+		
+		User updateUser = em.find(User.class, id);
+		boolean transac = false;
+		try {
+			em.getTransaction().begin();
+			if (field.equals("active")) {
+				updateUser.setActive(value);
+			}
+			if (field.equals("canShare")) {
+				updateUser.setCanShare(value);
+			}
+				transac=true;
+		}finally {
+			if (transac) {
+				em.getTransaction().commit();
+			}
+			else {
+				em.getTransaction().rollback();
+			}	
+		}		
+	
+		@SuppressWarnings("unchecked")
+		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
+				.getResultList();
+		em.close();
+		
+		return usersList;
+	}
+	
+	public static ArrayList<User> updateFieldAR(Integer id, String value){
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
+
+		//System.out.println(user);
+		//System.out.println(user.getId());
+		//User user = em.find(User.class,user.getId());
+		
+		User updateUser = em.find(User.class, id);
+		boolean transac = false;
+		try {
+			em.getTransaction().begin();
+			updateUser.setAccessRight(value);
+
+				transac=true;
+		}finally {
+			if (transac) {
+				em.getTransaction().commit();
+			}
+			else {
+				em.getTransaction().rollback();
+			}	
+		}		
+	
+		@SuppressWarnings("unchecked")
+		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
+				.getResultList();
+		em.close();
+		
+		return usersList;
+	}
+	
+	
 
 }

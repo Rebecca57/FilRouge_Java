@@ -41,6 +41,14 @@ public class UsersResource {
 		return UsersMethods.login(user);
 	}
 	
+	@GET
+	@Path("/get")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public User getUser(User user){
+		return UsersMethods.getUser(user);
+	}
+	
 	//Récupérer la liste des users
 	@POST
 	@Path("/add")
@@ -93,7 +101,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> updateFieldAccessRight(User user){
-		return UsersMethods.updateFieldAR(user.getId(),user.getAccessRight());
+		return UsersMethods.updateFieldAR(user.getId(),user.getAccessRight(), user.getSuperAdmin());
 	}
 
 	/**

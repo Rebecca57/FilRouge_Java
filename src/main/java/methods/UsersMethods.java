@@ -28,8 +28,8 @@ public class UsersMethods {
 		em.close();
 		
 		for (User user: listeUsers) {
-			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword())) {
-				System.out.println(user);
+			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword()) && user.getActive()) {
+				user.setPassword(null);
 				return user;
 			}
 		}
@@ -43,16 +43,17 @@ public class UsersMethods {
 		EntityManager em = factory.createEntityManager();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<User> listeTaches = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
+		ArrayList<User> listeUsers = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 
+		listeUsers.stream().forEach((User user) -> user.setPassword(null));
 		em.close();
 		System.out.println("LISTE USERS");
-		System.out.println(listeTaches.get(0));
-		return listeTaches;
+		System.out.println("listeUsers");
+		return listeUsers;
 	}
 	
-	//ADD A USER IN TH DB
+	//ADD A USER IN THE DB
 	public static ArrayList<User> add(User user) {
 		
 		System.out.println(user);
@@ -78,6 +79,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		
 		return usersList;
 	}
@@ -110,7 +112,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
-		
+		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		return usersList;
 	}
 	
@@ -119,10 +121,6 @@ public class UsersMethods {
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
-
-		System.out.println(user);
-		System.out.println(user.getId());
-		//User user = em.find(User.class,user.getId());
 		
 		User updateUser = em.find(User.class, user.getId());
 		boolean transac = false;
@@ -132,7 +130,6 @@ public class UsersMethods {
 			updateUser.setLastname(user.getLastname());
 			updateUser.setEmail(user.getEmail());
 			updateUser.setBirthday(user.getBirthday());
-			updateUser.setPassword(user.getPassword());
 			updateUser.setPhone(user.getPhone());
 			updateUser.setPictureUrl(user.getPictureUrl());
 			updateUser.setWorkArea(user.getWorkArea());
@@ -157,6 +154,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		
 		return usersList;
 	}
@@ -197,11 +195,12 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		usersList.stream().forEach((User user) -> user.setPassword(null));
 		
 		return usersList;
 	}
 	
-	public static ArrayList<User> updateFieldAR(Integer id, String value){
+	public static ArrayList<User> updateFieldAR(Integer id, String value, boolean superAdmin){
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -214,7 +213,8 @@ public class UsersMethods {
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
-			updateUser.setAccessRight(value);
+				updateUser.setAccessRight(value);
+				updateUser.setSuperAdmin(superAdmin);
 
 				transac=true;
 		}finally {
@@ -230,8 +230,22 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		usersList.stream().forEach((User user) -> user.setPassword(null));
 		
 		return usersList;
+	}
+
+	public static User getUser(User user) {
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
+
+			User updateUser = em.find(User.class, user.getId());
+		
+		em.close();
+		updateUser.setPassword(null);
+		
+		return updateUser;
 	}
 	
 	

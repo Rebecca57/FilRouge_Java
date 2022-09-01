@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
 import methods.UsersMethods;
 
@@ -22,7 +23,17 @@ import methods.UsersMethods;
 @Path("/users")
 public class UsersResource {
 	
+	
+	
 	public static ArrayList<User> listeTaches = new ArrayList<User>();
+	
+	@POST
+	@Path("/addImage")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<ImageBlob> addImage(ImageBlob blob) {
+		return UsersMethods.addImage(blob);
+	}
 
 	//Récupérer la liste des users
 	@SuppressWarnings("hiding")

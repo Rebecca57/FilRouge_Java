@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
 
 public class UsersMethods {
@@ -15,7 +16,34 @@ public class UsersMethods {
 	//@Resource(name="dataSource")
 	//private DataSource dataSource;
 	
+	public static ArrayList<ImageBlob> addImage(ImageBlob blob) {
+		System.out.println(blob);
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
+		EntityManager em = factory.createEntityManager();
 
+		boolean transac = false;
+		try {
+			em.getTransaction().begin();
+			em.persist(blob);
+			transac = true;
+		}
+		finally {
+			if (transac) {
+				em.getTransaction().commit();
+			}
+			else {
+				em.getTransaction().rollback();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<ImageBlob> imagesList = (ArrayList<ImageBlob>) em.createNativeQuery("SELECT * from images", ImageBlob.class)
+				.getResultList();
+		em.close();
+		
+		return imagesList;
+	}
+	
 	public static User login(User userEntered) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
@@ -247,6 +275,8 @@ public class UsersMethods {
 		
 		return updateUser;
 	}
+
+
 	
 	
 

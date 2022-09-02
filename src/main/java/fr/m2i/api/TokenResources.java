@@ -30,7 +30,7 @@ public class TokenResources {
 	@Produces({MediaType.APPLICATION_JSON})
 	//@Consumes({MediaType.APPLICATION_JSON})
 	public String getToken() {
-		return TokenMethods.issueToken("Administrator");
+		return TokenMethods.issueToken(new User());
 	}
 	
 	

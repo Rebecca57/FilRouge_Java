@@ -45,6 +45,7 @@ import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetVerifier;
 
+import fr.m2i.models.User;
 import fr.m2i.singleton.PrivateKey;
 
 import com.nimbusds.jose.crypto.impl.ECDSA;
@@ -57,7 +58,7 @@ public class TokenMethods {
 	//private PrivateKey key;
 	
 	
-	public static String issueToken(String accessRight) {  
+	public static String issueToken(User user) {  
 		
         try {
             
@@ -76,10 +77,15 @@ public class TokenMethods {
             JWTClaimsSet payload = new JWTClaimsSet.Builder()
                        //.issuer(uriInfo.getAbsolutePath().toString())
                        .issueTime(new Date())
-                       .subject(accessRight)
+                       .subject("logged user")
                        .expirationTime(Date.from(Instant.now().plusSeconds(600)))
                        //.issuer("localhost:4200")
-                       .claim("test", 57)
+                       .claim("id", user.getId())
+                       .claim("email", user.getEmail())
+                       .claim("firstname", user.getFirstname())
+                       .claim("lastname", user.getLastname())
+                       .claim("accessRight", user.getAccessRight())
+                       .claim("superAdmin", user.getSuperAdmin())
                        .build();
             
             
@@ -111,73 +117,12 @@ public class TokenMethods {
             	SignedJWT decodedJWT = SignedJWT.parse(token);
                 String header1 = decodedJWT.getHeader().toString();
                 System.out.println(header1);
-                String payload1 = decodedJWT.getPayload().toString();
+                String payload1 = decodedJWT.getPayload().toString();  
                 System.out.println(payload1);
             }
             System.out.println(isValid);
-            
-            /**
-            ConfigurableJWTProcessor<SimpleSecurityContext> jwtProcessor = new DefaultJWTProcessor<SimpleSecurityContext>();
-            JWKSource<SimpleSecurityContext> jweKeySource = new ImmutableSecret<SimpleSecurityContext>(key.toECPublicKey().getEncoded());
-            JWEKeySelector<SimpleSecurityContext> jweKeySelector =
-                new JWEDecryptionKeySelector<SimpleSecurityContext>(JWEAlgorithm.DIR, EncryptionMethod.A128CBC_HS256, jweKeySource);
-            jwtProcessor.setJWEKeySelector(jweKeySelector);
-            **/
-            
-            /**
-            String publicKeyContent =
-                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlPfD8thRbT1Md0xzA55zSzA084bevOGgFg1Jx5n2Fjtk5sJ" +
-                            "piTKaWvw92gRoZm0F0UzJ+lo55CiUKWBHIR9y+FcsEotaWjjAx9llqFzbRkCc3x9TCKyCG0Pr6OwRZdAWYFTaEI7m" +
-                            "eAfen+LuIUazwYBXfO7nVrzXg4EbMHL+wwUhalOJxkzBhXDOHnWKIQdNBSWUbl3RetWpGWYOzM9ePgGv2GbXgXFp4NYhS" +
-                            "hqDewIAhG2KhJHFR4E10GLEOzKep6VhOX3dRH897QuSnud5c" +
-                            "hoVrYePldzc2QGJYosgfn/oFfOTb+Kj4HQtOmvJvZZRfI7lWMjOgHen12vH8dOr0QIDAQAB";
-            String jwt= "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJRcm5CVjYwVkZvZF9ZaEw2Um5QNXp1NGNXNWZra1VNZ2EwQWJrdmt0VVo0In0.eyJleHAiOjE2MTY0MjY1NzksImlhdCI6MTYxNjQyNTk3OSwianRpIjoiMDU4ZDNjYzItMGY5OC00ODBlLWI0NGEtM2ExOWUzNDQyNzkzIiwiaXNzIjoiaHR0cDovL3Nlc3Rhd2tjMDFkZXYuYXBpY2EubG9jYWw6ODA4MC9hdXRoL3JlYWxtcy9tYXN0ZXIiLCJzdWIiOiIxMzI1YjM5Ny1mNzk4LTRmYTAtOGE2MC04OWRlM2MzZmQ0YmIiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJzZXNzaW9uX3N0YXRlIjoiY2Y3YzYxN2MtNTFlMy00NGIzLTk0MmItMTk4NDA0NmNlNWNmIiwiYWNyIjoiMSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4ifQ.J76L_obm89kFAL7zwg5wt1Qni6r7GZYDdgbWCfEKZfKwDc95cOOnfX2ULvglRCJ-Noaq5JKmZgkyg0wRJKeny-9yEwu0KZJuuJXF4pVvjjjYQIY4o4f8XkXaMvZmR4Lvo-MXQr3yKSsSVfWte2rj4nvc_2COQId1e1YLCJR1h00eiahGCzao8UOizmQfMtBSP0V6waSCgi2LUqBGRtoP8xlRD3UD4w4wBS8_H72NXRSLBVHvJ7G6Qy3-yScnVIldibiqhNj5_htiFS7I32sQxLdNluoAXFy3SjkgcX7ibnaZTvE2l7Wn1izMaq3qVUV25FxCJrVpbbzyu8XAL7o0KQ";
-            
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));
-            RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
-            Object test = Jwts.parser()
-                    .setSigningKey(pubKey)
-                    .parseClaimsJws(jwt).getBody();
-            System.out.println(test);
-            
-          **/  
-            
-            /**
-            ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
-            jwtProcessor.setJWSTypeVerifier(new DefaultJOSEObjectTypeVerifier<>(JOSEObjectType.JWT));
-            
-            JWKSource<SecurityContext> keySource=new RemoteJWKSet<>(new URL("https://demo.c2id.com/jwks.json"));
-            JWSAlgorithm expectedJWSAlg = JWSAlgorithm.ES256;
-            JWSKeySelector<SecurityContext> keySelector =new JWSVerificationKeySelector<>(expectedJWSAlg, keySource);
-            jwtProcessor.setJWSKeySelector(keySelector);
-            jwtProcessor.setJWTClaimsSetVerifier((JWTClaimsSetVerifier<SecurityContext>) new DefaultJWTClaimsVerifier<SecurityContext>(
-            	    new JWTClaimsSet.Builder().issuer("https://demo.c2id.com").build(),
-            	    new HashSet<>(Arrays.asList("sub", "exp"))));
-            
-         // Process the token
-            SecurityContext ctx = null; // optional context parameter, not required here
-            JWTClaimsSet claimsSet = jwtProcessor.process(jwtToken, ctx);
-
-            // Print out the token claims set
-            System.out.println(claimsSet.toJSONObject());**/
+           
           
     }
-	
-	/**
-	public static String decryptToken(String token) {
-		 JsonObject payload = dao.getBearerDetails(user, pass);
-		    String bearerToken =  JWebToken(payload).toString();
-
-		    //@TODO Send this token over the network
-
-		    //recieve the bearer token
-		    JsonToken incomingToken = new JsonToken(bearerToken);
-
-		    if (incomingToken.isValid()) {
-		       System.out.println(incomingToken.getSubject());
-		    }
-		
-	}**/
 
 }

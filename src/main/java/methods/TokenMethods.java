@@ -77,10 +77,16 @@ public class TokenMethods {
             JWTClaimsSet payload = new JWTClaimsSet.Builder()
                        //.issuer(uriInfo.getAbsolutePath().toString())
                        .issueTime(new Date())
-                       .subject(user.getAccessRight())
+
+                       .subject("logged user")
                        .expirationTime(Date.from(Instant.now().plusSeconds(600)))
+                       //.issuer("localhost:4200")
                        .claim("id", user.getId())
-                       .claim("test", 57)
+                       .claim("email", user.getEmail())
+                       .claim("firstname", user.getFirstname())
+                       .claim("lastname", user.getLastname())
+                       .claim("accessRight", user.getAccessRight())
+                       .claim("superAdmin", user.getSuperAdmin())
                        .build();
             
             
@@ -104,6 +110,7 @@ public class TokenMethods {
                     .keyID("1")
                     .generate();**/
             ECKey newKey = PrivateKey.getInstance().getKey();
+
             System.out.println(newKey);
             
             try {

@@ -67,6 +67,7 @@ public class CorsFilter extends HttpFilter implements Filter {
                     System.out.print("Name "+headerName);
 	            	System.out.print("Value "+headerValue+"\n");
 	            	
+
 	            	if (headerName.equals("authorization") ) {
 	            		
             			String token = headerValue.substring("Bearer ".length());

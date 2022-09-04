@@ -51,11 +51,13 @@ public class CorsFilter extends HttpFilter implements Filter {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+
 		
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, Authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
+
 
 		String headerName="";
 		Enumeration<String> body = httpRequest.getParameterNames();
@@ -68,6 +70,7 @@ public class CorsFilter extends HttpFilter implements Filter {
 	            	System.out.print("Value "+headerValue+"\n");
 	            	
 
+
 	            	if (headerName.equals("authorization") ) {
 	            		
             			String token = headerValue.substring("Bearer ".length());
@@ -79,6 +82,7 @@ public class CorsFilter extends HttpFilter implements Filter {
 							e.printStackTrace();
 						}	                    
 	            	}
+
 	            }
 	            
 	    }

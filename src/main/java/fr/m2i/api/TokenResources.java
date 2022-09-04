@@ -22,7 +22,7 @@ import fr.m2i.singleton.PrivateKey;
 import methods.TokenMethods;
 
 
-@Path("tokens")
+@Path("/tokens")
 public class TokenResources {
 	
 	@GET

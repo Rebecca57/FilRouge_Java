@@ -23,7 +23,7 @@ import methods.TokenMethods;
 /**
  * Servlet Filter implementation class CorsFilter
  */
-@WebFilter("/api/events/add")
+@WebFilter("/api/events/add/fdgdfg")
 public class TokenFilter extends HttpFilter implements Filter {
 	TokenMethods tokenMet= new TokenMethods();
     /**

@@ -44,8 +44,11 @@ public class CorsFilter extends HttpFilter implements Filter {
 		
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		Enumeration<String> headerNames = httpRequest.getHeaderNames();		 
-
+		Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+		Enumeration<String> token = httpRequest.getHeaders("id");
+		System.out.println( token.nextElement());
+		httpRequest.getSession().setAttribute("id", token.nextElement());
+		
 		String headerName="";
 	    if (headerNames != null) {
 	            while (headerNames.hasMoreElements()) {
@@ -54,10 +57,13 @@ public class CorsFilter extends HttpFilter implements Filter {
                     System.out.println("NAme "+headerName);
 	            	System.out.println("Value "+headerValue);
 	            	
+	            	
+	            
+	            	
 	            	//if (headerValue.equals("test") || headerValue.equals("57") || headerValue.equals("content-type,test")) {
 	            		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 	                    ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true" );
-	                    ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, test, authorization");//Client-Security-Token
+	                    ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, test, authorization,id");//Client-Security-Token
 	                    ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 	                    
 	            	//}

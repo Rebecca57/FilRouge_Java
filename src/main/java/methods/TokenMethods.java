@@ -79,6 +79,7 @@ public class TokenMethods {
             JWTClaimsSet payload = new JWTClaimsSet.Builder()
                        //.issuer(uriInfo.getAbsolutePath().toString())
                        .issueTime(new Date())
+
                        .subject("logged user")
                        .expirationTime(Date.from(Instant.now().plusSeconds(600)))
                        //.issuer("localhost:4200")
@@ -105,31 +106,42 @@ public class TokenMethods {
             
         }
             
-        public static void validateToken(String token) throws JOSEException, ParseException { 
+        public static boolean validateToken(String token) throws JOSEException, ParseException { 
             //Validation
             /**ECKey key3 = new ECKeyGenerator(Curve.P_256)
                     .keyID("1")
                     .generate();**/
             ECKey newKey = PrivateKey.getInstance().getKey();
-            Boolean isValid = SignedJWT.parse(token)
-           	    .verify(new ECDSAVerifier(newKey.toECPublicKey()));
+
+            System.out.println(newKey);
             
-            //Decode
-            if (isValid) {
-            	SignedJWT decodedJWT = SignedJWT.parse(token);
-                String header1 = decodedJWT.getHeader().toString();
-                System.out.println(header1);
-                String payload1 = decodedJWT.getPayload().toString();  
-                System.out.println(payload1);
-                
-                //test cliams
-                JWTClaimsSet decodJWT = JWTClaimsSet.parse(token);
-            	Map<String, Object> claims =decodJWT.getClaims();
+
+
+            try {
+            	
+	            Boolean isValid = SignedJWT.parse(token)
+	           	    .verify(new ECDSAVerifier(newKey.toECPublicKey()));
+	            if (isValid) {
+	            	
+	            	SignedJWT decodedJWT = SignedJWT.parse(token);
+	                //String header1 = decodedJWT.getHeader().toString();
+	                //System.out.println(header1);
+	                String payload1 = decodedJWT.getPayload().toString();
+	                //Object id = decodedJWT.getClaim("id");
+	                System.out.println(payload1);
+	                return true;
+	            }
+
             }
-            System.out.println(isValid);
-           
+            catch(Exception e) {
+            	System.out.println("No Private key available");
+            	return false;
+            }
+
+            return false;
           
     }
+
         
         public static Map<String, Object> getClaimsToken (String token) throws JOSEException, ParseException{
         	ECKey newKey = PrivateKey.getInstance().getKey();
@@ -159,7 +171,23 @@ public class TokenMethods {
         	
         	//SignedJWT decodedJWT = SignedJWT.parse(token);
         	//decodedJWT.getPayload().
+          
+                     //Decode
+           /* if (isValid) {
+            	SignedJWT decodedJWT = SignedJWT.parse(token);
+                String header1 = decodedJWT.getHeader().toString();
+                System.out.println(header1);
+                String payload1 = decodedJWT.getPayload().toString();  
+                System.out.println(payload1);
+                
+                //test cliams
+                JWTClaimsSet decodJWT = JWTClaimsSet.parse(token);
+            	Map<String, Object> claims =decodJWT.getClaims();*/
         	
         }
+
+
+      //JWTClaimsSet decodedJWT = JWTClaimsSet.parse(token);
+	
 
 }

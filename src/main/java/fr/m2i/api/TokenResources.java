@@ -36,14 +36,14 @@ public class TokenResources {
 	
 	@GET
 	@Path("/validate")
-	//@Produces({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	//@Consumes({MediaType.APPLICATION_JSON})
-	public void validate(TokenModel token) throws JOSEException, ParseException {
+	public boolean validate(TokenModel token) throws JOSEException, ParseException {
 		System.out.println(token.getToken());
 		System.out.println(token.getToken().getClass());
 		System.out.println(PrivateKey.getINSTANCE().getKey());
-		TokenMethods.validateToken(token.getToken());
+		return TokenMethods.validateToken(token.getToken());
 	}
 	
 
@@ -54,7 +54,7 @@ public class TokenResources {
 	public ResponseEntity<User> test()  {
 		
 		HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.set("token", 
+	    responseHeaders.set("authorization", 
 	      "Bean 45615645233qs3d2sf23s8f3sd87f27sd83f78s3fs");
 	    responseHeaders.set("token2", 
 	  	      "Bean 56256618646d2sf23s8f3sd87f27sd83f78s3fs");

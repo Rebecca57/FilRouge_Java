@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
+import fr.m2i.singleton.PrivateKey;
 import methods.TokenMethods;
 import methods.UsersMethods;
 
@@ -52,18 +53,19 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ResponseEntity<User> login(User user){
-		User body  = UsersMethods.login(user);
-		HttpHeaders responseHeaders = new HttpHeaders();
-		if (body != null) {
-			String token = TokenMethods.issueToken(body);
-		    responseHeaders.set("token", 
-		      "Bean "+token);	
-		}
-		
-		return ResponseEntity.ok()
-			      .headers(responseHeaders)
-			      .body(body);
-		
+		User body = UsersMethods.login(user);
+		if (body == null){
+			System.out.println(body);
+			return null;
+		}else {
+			System.out.println(body);
+			HttpHeaders responseHeaders = new HttpHeaders();
+		    responseHeaders.set("authorization", 
+		      "Bean "+TokenMethods.issueToken(user));
+			return ResponseEntity.ok()
+				      .headers(responseHeaders)
+				      .body(body);			
+		}	
 	}
 	
 	@GET

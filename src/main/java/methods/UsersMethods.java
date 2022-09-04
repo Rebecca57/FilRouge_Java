@@ -57,6 +57,7 @@ public class UsersMethods {
 		
 		for (User user: listeUsers) {
 			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword()) && user.getActive()) {
+				TokenMethods.issueToken(user);
 				user.setPassword(null);
 				return user;
 			}

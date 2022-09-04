@@ -13,10 +13,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
+import fr.m2i.singleton.PrivateKey;
+import methods.TokenMethods;
 import methods.UsersMethods;
 
 
@@ -48,8 +52,20 @@ public class UsersResource {
 	@Path("/login")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
-	public User login(User user){
-		return UsersMethods.login(user);
+	public ResponseEntity<User> login(User user){
+		User body = UsersMethods.login(user);
+		if (body == null){
+			System.out.println(body);
+			return null;
+		}else {
+			System.out.println(body);
+			HttpHeaders responseHeaders = new HttpHeaders();
+		    responseHeaders.set("authorization", 
+		      "Bean "+TokenMethods.issueToken(user));
+			return ResponseEntity.ok()
+				      .headers(responseHeaders)
+				      .body(body);			
+		}	
 	}
 	
 	@GET

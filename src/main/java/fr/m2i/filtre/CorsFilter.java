@@ -2,8 +2,10 @@
 package fr.m2i.filtre;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,14 +18,18 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nimbusds.jose.JOSEException;
+
+import methods.TokenMethods;
+
 /**
  * Servlet Filter implementation class CorsFilter
  */
-@WebFilter("/*")
+@WebFilter("/api/users/all")
 public class CorsFilter extends HttpFilter implements Filter {
        
     /**
-     * @see HttpFilter#HttpFilter()
+     * @see HttpFilter#HttpFilter()"
      */
     public CorsFilter() {
         super();
@@ -44,38 +50,39 @@ public class CorsFilter extends HttpFilter implements Filter {
 		
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		Enumeration<String> headerNames = httpRequest.getHeaderNames();		 
+		Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+		
+		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, Authorization");//Client-Security-Token
+        ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
 		String headerName="";
+		Enumeration<String> body = httpRequest.getParameterNames();
+		System.out.println(body);
 	    if (headerNames != null) {
 	            while (headerNames.hasMoreElements()) {
 	            	headerName=headerNames.nextElement();
 	            	String headerValue = httpRequest.getHeader(headerName);
-                    System.out.println("NAme "+headerName);
-	            	System.out.println("Value "+headerValue);
+                    System.out.print("Name "+headerName);
+	            	System.out.print("Value "+headerValue+"\n");
 	            	
-	            	if (headerValue.equals("test") || headerValue.equals("57") || headerValue.equals("content-type,test")) {
-	            		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-	                    ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-	                    ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, test");//Client-Security-Token
-	                    ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
-	                    
+	            	if (headerName.equals("authorization") ) {
+	            		
+            			String token = headerValue.substring("Bearer ".length());
+            			System.out.println(token);
+            			try {
+							TokenMethods.validateToken(token);
+						} catch (JOSEException | ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	                    
 	            	}
 	            }
-	            chain.doFilter(request, response);
+	            
 	    }
-	    //((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-		//((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-		//((HttpServletResponse)response).setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-		//((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-        //chain.doFilter(request, response);
-		/**((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept,Client-Security-Token");
-        ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        chain.doFilter(request, response);**/
-		
-		
+	
+	    chain.doFilter(request, response);
 	}
 
 	/**

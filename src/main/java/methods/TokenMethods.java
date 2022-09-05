@@ -21,6 +21,7 @@ import com.nimbusds.jose.JWEAlgorithm;
 import com.nimbusds.jose.JWEDecrypter;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.jwk.Curve;
@@ -63,7 +64,9 @@ public class TokenMethods {
 	public static String issueToken(User user) {  
 		
         try {
-            
+        	
+        	System.out.println("TOKEN IS GENERATED");
+        	System.out.println(user.getSuperAdmin());
             ECKey key = new ECKeyGenerator(Curve.P_256)
                .keyID("1")
                .generate();
@@ -126,9 +129,9 @@ public class TokenMethods {
 	            	SignedJWT decodedJWT = SignedJWT.parse(token);
 	                //String header1 = decodedJWT.getHeader().toString();
 	                //System.out.println(header1);
-	                String payload1 = decodedJWT.getPayload().toString();
+	                Payload payload1 = decodedJWT.getPayload();
 	                //Object id = decodedJWT.getClaim("id");
-	                System.out.println(payload1);
+	                System.out.println(payload1.toJSONObject());
 	                return true;
 	            }
 

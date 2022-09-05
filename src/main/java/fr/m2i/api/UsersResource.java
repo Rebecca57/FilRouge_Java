@@ -60,8 +60,7 @@ public class UsersResource {
 		}else {
 			System.out.println(body);
 			HttpHeaders responseHeaders = new HttpHeaders();
-		    responseHeaders.set("authorization", 
-		      "Bean "+TokenMethods.issueToken(user));
+		    responseHeaders.set("authorization",TokenMethods.issueToken(body));
 			return ResponseEntity.ok()
 				      .headers(responseHeaders)
 				      .body(body);			

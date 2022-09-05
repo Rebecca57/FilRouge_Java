@@ -19,16 +19,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 
 import methods.TokenMethods;
 
-/**
- * Servlet Filter implementation class CorsFilter
- */
-@WebFilter("/api/users/all")
+//Filter for Admin privilegies
+@WebFilter(urlPatterns={"/api/users/add","/api/users/delete",
+		"/api/users/all","/api/users/updateFieldActive","/api/users/updateFieldCanShare",
+		"/api/users/updateFieldAccessRight"})
 public class CorsFilter extends HttpFilter implements Filter {
        
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * @see HttpFilter#HttpFilter()"
      */
     public CorsFilter() {
@@ -55,7 +61,7 @@ public class CorsFilter extends HttpFilter implements Filter {
 		
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, Authorization");//Client-Security-Token
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
 
@@ -69,17 +75,29 @@ public class CorsFilter extends HttpFilter implements Filter {
                     System.out.print("Name "+headerName);
 	            	System.out.print("Value "+headerValue+"\n");
 	            	
-
-
 	            	if (headerName.equals("authorization") ) {
 	            		
             			String token = headerValue.substring("Bearer ".length());
             			System.out.println(token);
             			try {
-							TokenMethods.validateToken(token);
+							boolean valid = TokenMethods.validateToken(token);
+							if (valid) {
+								//SignedJWT decodedJWT = SignedJWT.parse(token);
+				                //String header1 = decodedJWT.getHeader().toString();
+				                //System.out.println(header1);
+								SignedJWT decodedJWT = SignedJWT.parse(token);
+								boolean admin = (boolean) decodedJWT.getPayload().toJSONObject().get("superAdmin");
+					        	if(!admin) {
+					        		return;
+					        	}
+							}else {
+								return;
+							}
+							
 						} catch (JOSEException | ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							return;
 						}	                    
 	            	}
 

@@ -3,7 +3,6 @@ package fr.m2i.filtre;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Enumeration;
-import java.util.HashMap;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,22 +15,23 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.mapping.Map;
-
 import com.nimbusds.jose.JOSEException;
 
 import methods.TokenMethods;
 
-//FILTER FOR LOGIN - no token needed
-@WebFilter(urlPatterns={"/api/users/login"})
-public class LoginFilter extends HttpFilter implements Filter {
+//FILTER FOR COLLABORATOR ACCESSIBLE METHODS
+@WebFilter(urlPatterns={"/api/users/get","/api/users/update"})
+public class UserFilter extends HttpFilter implements Filter {
        
+    /**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
      * @see HttpFilter#HttpFilter()
      */
-    public LoginFilter() {
+    public UserFilter() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,29 +47,25 @@ public class LoginFilter extends HttpFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		//Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+		Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+
 		
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, authorization");//Client-Security-Token
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, Authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
-        java.util.Map<String, String[]> param = httpRequest.getParameterMap();
-        String query = httpRequest.getQueryString();
-        System.out.println(query);
-        System.out.println(param);
-        /**
+
 		String headerName="";
-		Enumeration<String> body = httpRequest.getParameterNames(); 
-		System.out.println(body);
+		//Enumeration<String> body = httpRequest.getParameterNames();
+		//System.out.println(body);
 	    if (headerNames != null) {
 	            while (headerNames.hasMoreElements()) {
 	            	headerName=headerNames.nextElement();
 	            	String headerValue = httpRequest.getHeader(headerName);
-                    System.out.print("Name "+headerName);
-	            	System.out.print("Value "+headerValue+"\n");
+                    System.out.print(headerName+" : ");
+	            	System.out.print(headerValue+"\n");
 	            	
 	            	if (headerName.equals("authorization") ) {
 	            		
@@ -82,9 +78,12 @@ public class LoginFilter extends HttpFilter implements Filter {
 							e.printStackTrace();
 						}	                    
 	            	}
+
 	            }
-	    }**/
-        chain.doFilter(request, response);
+	            
+	    }
+	
+	    chain.doFilter(request, response);
 	}
 
 	/**

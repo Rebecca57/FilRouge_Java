@@ -146,7 +146,7 @@ System.out.println(event);
 		System.out.println(event);
 		Integer idN = Integer.parseInt(id);
 		
-		Event updateEvent = em.find(Event.class, idN);
+		Event updateEvent = em.find(Event.class, event.getId());
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
@@ -155,9 +155,8 @@ System.out.println(event);
 			updateEvent.setStartTimeEvent(event.getStartTimeEvent());
 			updateEvent.setEndTimeEvent(event.getEndTimeEvent());
 			updateEvent.setDescription(event.getDescription());
+			transac=true;
 			
-
-				transac=true;
 		}finally {
 			if (transac) {
 				em.getTransaction().commit();

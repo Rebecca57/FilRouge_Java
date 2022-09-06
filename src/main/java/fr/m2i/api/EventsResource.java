@@ -45,7 +45,7 @@ public class EventsResource {
 	@Path("/all")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
-	public ArrayList<Event> display(String ideeee,@QueryParam("id") String id){
+	public ArrayList<Event> display(String ide,@QueryParam("id") String id){
 
 //	@Context HttpServletRequest request
 

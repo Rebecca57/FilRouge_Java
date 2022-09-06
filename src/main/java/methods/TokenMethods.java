@@ -155,7 +155,7 @@ public class TokenMethods {
         	//Map<String, Object> claims = this.claimSetConverter.convert(JWTClaimsSet.parse(token).getClaims());
         	
         	JWTClaimsSet decodedJWT = JWTClaimsSet.parse(token);
-        	Map<String, Object> claims =decodedJWT.getClaims();
+        	Map<String, Object> claims = decodedJWT.getClaims();
         	
         	/*String payload1 = decodedJWT.getPayload() .toString(); 
         	decodedJWT.

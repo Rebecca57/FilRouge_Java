@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="events")
 public class Event {
@@ -22,7 +25,7 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	private int _id;
+	private Integer id;
 	
 	@Basic
 	@Column(name="name")
@@ -46,30 +49,27 @@ public class Event {
 	
 	
 	//TEMPORAIRE
-	@Basic
+	/*@Basic
 	@Column(name="calendar_id")
-	private int idCalendar;
+	private int idCalendar;*/
+
+	@ManyToOne
+	@JsonBackReference 
+	@JoinColumn(name = "calendar_id")//, nullable=false
+	private Calendars idCalendar;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "calendar_id")
-	private Calendar idCalendar;*/
 	
-		public int getIdCalendar() {
-		return idCalendar;
+	
+
+
+
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setIdCalendar(int idCalendar) {
-		this.idCalendar = idCalendar;
-	}
-
-	public int get_id() {
-		return _id;
-	}
-
-
-
-	public void set_id(int _id) {
-		this._id = _id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getNameEvent() {
@@ -113,16 +113,13 @@ public class Event {
 		this.description = description;
 	}
 
-	/*public Calendar getIdCalendar() {
+	public Calendars getIdCalendar() {
 		return idCalendar;
 	}
 
-	public void setIdCalendar(Calendar idCalendar) {
+	public void setIdCalendar(Calendars idCalendar) {
 		this.idCalendar = idCalendar;
-	}*/
-	
-	
-	//Participants???
+	}
 	
 
 	

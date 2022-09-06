@@ -14,14 +14,16 @@ public class EventsMethods {
 	//@Resource(name="dataSource")
 	//private DataSource dataSource;
 	
-	public static ArrayList<Event> display() {
+	public static ArrayList<Event> display(String id) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
 
 		@SuppressWarnings("unchecked")
-		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events", Event.class)
-				.getResultList();
+		/*<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events INNER JOIN calendars ON events.calendar_id = calendars.id INNER JOIN users ON calendars.user_id=users.id WHERE users.id=?;", Event.class)*/
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?;", Event.class)
+		.setParameter(1,id)		
+		.getResultList();
 
 		em.close();
 		System.out.println("GET ALL EVENTS");
@@ -30,7 +32,7 @@ public class EventsMethods {
 	}
 	
 	//get the events of a day from a user
-	public static ArrayList<Event> get(Event event) {
+	/*public static ArrayList<Event> get(Event event) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -38,7 +40,7 @@ public class EventsMethods {
 		//Integer id =event.getIdCalendar();
 		java.util.Date utilDate  = event.getDateEvent();
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-		Integer calendarId = event.getIdCalendar();
+		//Integer calendarId = event.getIdCalendar();
 		System.out.println("DATE");
 		System.out.println(utilDate);
 		System.out.println(sqlDate);
@@ -47,14 +49,14 @@ public class EventsMethods {
 		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events WHERE date=? AND calendar_id=?", Event.class)
 				.setParameter(1,sqlDate)
 				.setParameter(2,calendarId)
-				.getResultList();
+				.getResultList();*/
 
-		em.close();
+		/*em.close();
 		System.out.println(" GET EVENTS FROM DATE");
 		System.out.println(eventsList);
 		
 		return eventsList;
-	}
+	}*/
 	
 	//ADD A USER IN TH DB
 	public static ArrayList<Event> add(Event event) {
@@ -95,8 +97,8 @@ public class EventsMethods {
 		EntityManager em = factory.createEntityManager();
 
 		System.out.println(event);
-		System.out.println(event.get_id());
-		Event eventD = em.find(Event.class,event.get_id());
+		System.out.println(event.getId());
+		Event eventD = em.find(Event.class,event.getId());
 			
 		boolean transac = false;
 		try {
@@ -126,10 +128,10 @@ public class EventsMethods {
 		EntityManager em = factory.createEntityManager();
 
 		System.out.println(event);
-		System.out.println(event.get_id());
+		System.out.println(event.getId());
 		//Event event = em.find(Event.class,event.getId());
 		
-		Event updateEvent = em.find(Event.class, event.get_id());
+		Event updateEvent = em.find(Event.class, event.getId());
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();

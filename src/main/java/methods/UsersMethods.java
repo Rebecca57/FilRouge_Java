@@ -1,9 +1,6 @@
 package methods;
 
 import java.util.ArrayList;
-
-import javax.activation.DataSource;
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -90,7 +87,7 @@ public class UsersMethods {
 		EntityManager em = factory.createEntityManager();
 		
 		Calendars newCalendar = new Calendars();
-		newCalendar.setId(user.getId());
+		newCalendar.setUser_id(user);
 		newCalendar.setEditableByOther(true);
 
 		boolean transac = false;

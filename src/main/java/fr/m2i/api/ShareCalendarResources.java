@@ -10,7 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
+import fr.m2i.models.Shares;
 import fr.m2i.models.User;
 import methods.ShareCalendarMethods;
 
@@ -35,8 +35,6 @@ public class ShareCalendarResources {
 		return ShareCalendarMethods.getNotContacts(user.getId());
 	}
 	
-
-	
 	@POST
 	@Path("/add")
 	@Produces({MediaType.APPLICATION_JSON})
@@ -52,6 +50,36 @@ public class ShareCalendarResources {
 	public ArrayList<User> delete(User user){
 		return ShareCalendarMethods.deleteContact(user);
 	}
+	
+	
+	
+	
+	
+	@POST
+	@Path("/getShares")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> getShares(User user){
+		return ShareCalendarMethods.getShares(user.getId());
+	}
+	
+	@POST
+	@Path("/getNotShares")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> getNotShares(User user){
+		return ShareCalendarMethods.getNotShares(user.getId());
+	}
+	
+	@POST
+	@Path("/addShare")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> addShare(User user) throws Exception{
+		return ShareCalendarMethods.addShare(user);
+	}
+	
+
 	
 
 

@@ -59,14 +59,13 @@ public class EventsResource {
 	@Path("/add")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
-	public ArrayList<Event> add(EventId eventId){
+	public ArrayList<Event> add(Event event,@QueryParam("id") String id){
 		System.out.println("Injected Event");
-		System.out.println(eventId);
-		
-		System.out.println(eventId.getIdUser());
 		
 		
-		return EventsMethods.add(eventId.getEvent());
+		
+		
+		return EventsMethods.add(event,id);
 		
 	
 		/*public ResponseEntity<User> login(User user){
@@ -86,14 +85,14 @@ public class EventsResource {
 	}
 	
 	//Delete an Event
-	@DELETE
+	@POST
 	@Path("/delete")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
-	public ArrayList<Event> delete(Event Event){
+	public ArrayList<Event> delete(Event Event,@QueryParam("id") String id){
 		System.out.println("Injected Event");
 		System.out.println(Event.getClass());
-		return EventsMethods.delete(Event);
+		return EventsMethods.delete(Event, id);
 	}
 	
 	//Update an Event 
@@ -101,8 +100,8 @@ public class EventsResource {
 	@Path("/update")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
-	public ArrayList<Event> update(Event Event,@PathParam("id") Integer id ){
-		return EventsMethods.update(Event);
+	public ArrayList<Event> update(Event Event,@QueryParam("id") String id){
+		return EventsMethods.update(Event, id );
 	}
 
 	/**

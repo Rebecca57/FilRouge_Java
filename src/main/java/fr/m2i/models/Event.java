@@ -33,7 +33,8 @@ public class Event {
 	
 	@Basic
 	@Column(name="date")
-	private Timestamp dateEvent;
+	private Date dateEvent;
+	//private Timestamp dateEvent;
 	
 	@Basic
 	@Column(name="start_time")
@@ -81,11 +82,13 @@ public class Event {
 	}
 
 
-	public Timestamp getDateEvent() {
+
+
+	public Date getDateEvent() {
 		return dateEvent;
 	}
 
-	public void setDateEvent(Timestamp dateEvent) {
+	public void setDateEvent(Date dateEvent) {
 		this.dateEvent = dateEvent;
 	}
 
@@ -119,6 +122,13 @@ public class Event {
 
 	public void setIdCalendar(Calendars idCalendar) {
 		this.idCalendar = idCalendar;
+	}
+
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", nameEvent=" + nameEvent + ", dateEvent=" + dateEvent + ", startTimeEvent="
+				+ startTimeEvent + ", endTimeEvent=" + endTimeEvent + ", description=" + description + ", idCalendar="
+				+ idCalendar + "]";
 	}
 	
 

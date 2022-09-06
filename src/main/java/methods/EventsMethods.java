@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import fr.m2i.models.Event;
+import fr.m2i.models.User;
 public class EventsMethods {
 
 	
@@ -59,15 +60,27 @@ public class EventsMethods {
 	}*/
 	
 	//ADD A USER IN TH DB
-	public static ArrayList<Event> add(Event event) {
+	public static ArrayList<Event> add(Event event, String id) {
 		
 		System.out.println(event);
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
-
+System.out.println(event);
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
+			 /*em.createNativeQuery("INSERT INTO events(name, date, start_time, end_time, description) VALUES ('?','?','?','?','?') WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?", Event.class)
+			.setParameter(1,event.getNameEvent())	
+			.setParameter(2,event.getDateEvent())
+			.setParameter(3,event.getStartTimeEvent())
+			.setParameter(4,event.getEndTimeEvent())
+			.setParameter(5,event.getDescription())
+			.setParameter(6,id);*/
+			 System.out.println(event);
+			User user = (User) em.createNativeQuery("SELECT * from users WHERE users.id=?",User.class)
+					.setParameter(1,id)
+					.getSingleResult();
+			event.setIdCalendar(user.getCalendar());
 			em.persist(event);
 			transac = true;
 		}
@@ -82,8 +95,9 @@ public class EventsMethods {
 		
 	
 		@SuppressWarnings("unchecked")
-		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events", Event.class)
-				.getResultList();
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?;", Event.class)
+		.setParameter(1,id)		
+		.getResultList();
 		em.close();
 		
 		return eventsList;
@@ -91,7 +105,7 @@ public class EventsMethods {
 	
 	
 	//DELETE A USER IN THE DB
-	public static ArrayList<Event> delete(Event event){
+	public static ArrayList<Event> delete(Event event, String id){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -114,15 +128,16 @@ public class EventsMethods {
 			}	
 		}	
 		@SuppressWarnings("unchecked")
-		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events", Event.class)
-				.getResultList();
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?;", Event.class)
+		.setParameter(1,id)		
+		.getResultList();
 		em.close();
 		
 		return eventsList;
 	}
 	
 	//UPDATE AN USER IN THE DB
-	public static ArrayList<Event> update(Event event){
+	public static ArrayList<Event> update(Event event, String id){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -154,8 +169,9 @@ public class EventsMethods {
 		}		
 	
 		@SuppressWarnings("unchecked")
-		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events", Event.class)
-				.getResultList();
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?;", Event.class)
+		.setParameter(1,id)		
+		.getResultList();
 		em.close();
 		
 		return eventsList;

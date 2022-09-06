@@ -3,14 +3,20 @@ package fr.m2i.models;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import fr.m2i.models.Calendars;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -18,7 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -94,9 +100,21 @@ public class User{
     private List<Shares> shares = new ArrayList<>();
 	*/
 	
-	//@OneToOne(targetEntity = Calendar.class, mappedBy="_idUser")
-	//private Calendar calendar;
+	
+	
+	//@JsonManagedReference 
+	@OneToOne(targetEntity = Calendars.class , mappedBy="user_id", fetch = FetchType.EAGER )//
+	private Calendars calendar;
+	
 
+		
+
+	public Calendars getCalendar() {
+		return calendar;
+	}
+	public void setCalendar(Calendars calendar) {
+		this.calendar = calendar;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -204,24 +222,17 @@ public class User{
 	}
 	public void setSuperAdmin(boolean superAdmin) {
 		this.superAdmin = superAdmin;
-	}
-	
-	
+	}	
 	public boolean getCanShare() {
 		return this.canShare;
 	}
 	public void setCanShare(boolean canShare) {
 		this.canShare = canShare;
 	}
-	
-	
 	public boolean getActive() {
 		return this.active;
 	}
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-
 }
-

@@ -79,7 +79,35 @@ public class ShareCalendarResources {
 		return ShareCalendarMethods.addShare(user);
 	}
 	
-
+	@DELETE
+	@Path("/deleteShare")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public ArrayList<User> deleteShare(User user){
+		return ShareCalendarMethods.deleteShare(user);
+	}
+	
+	@POST
+	@Path("/editR")
+	//@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public void editR(Shares share){
+		System.out.println(share);
+		System.out.println(share.getUserId()+" "+share.getCalendarId()+share.getId()+share.isReadonly());
+		ShareCalendarMethods.editR(share);
+	}
+	
+	@POST
+	@Path("/getShare")
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON})
+	public Shares getShare(Shares share){
+		System.out.println(share);
+		System.out.println(share.getUserId()+" "+share.getCalendarId()+share.getId()+share.isReadonly());
+		return ShareCalendarMethods.getShare(share);
+	}
+	
+	
 	
 
 

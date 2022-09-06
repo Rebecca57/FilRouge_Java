@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name="calendars")
-public class Calendar {
+public class Calendars {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Calendar {
 	private boolean editableByOther;
 	
 	
-	public Calendar() {
+	public Calendars() {
 	}
 	
 	public void setUserId(Integer userId) {

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import fr.m2i.models.Calendar;
+import fr.m2i.models.Calendars;
 import fr.m2i.models.Shares;
 import fr.m2i.models.User;
 
@@ -60,7 +60,7 @@ public class ShareCalendarMethods {
 				.setParameter(1,user.getEmail())
 				.getSingleResult();
 		
-		Calendar calendar = (Calendar) em.createNativeQuery("SELECT * FROM calendars WHERE calendars.user_id = ?",Calendar.class)
+		Calendars calendar = (Calendars) em.createNativeQuery("SELECT * FROM calendars WHERE calendars.user_id = ?",Calendars.class)
 				.setParameter(1,userToAdd.getId())
 				.getSingleResult();
 		
@@ -101,7 +101,7 @@ public class ShareCalendarMethods {
 				.setParameter(1,user.getEmail())
 				.getSingleResult();
 		
-		Calendar CalToId = (Calendar) em.createNativeQuery("SELECT * FROM calendars WHERE calendars.user_id=?",Calendar.class)//"SELECT u1.id FROM calendars as u1, users as u2  WHERE (u2.email=? AND u1.user_id = u2.id)"
+		Calendars CalToId = (Calendars) em.createNativeQuery("SELECT * FROM calendars WHERE calendars.user_id=?",Calendars.class)//"SELECT u1.id FROM calendars as u1, users as u2  WHERE (u2.email=? AND u1.user_id = u2.id)"
 				.setParameter(1,UserToId.getId())
 				.getSingleResult();
 		

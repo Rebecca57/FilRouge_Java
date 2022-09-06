@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import fr.m2i.models.Calendar;
+import fr.m2i.models.Calendars;
 import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
 
@@ -89,7 +89,7 @@ public class UsersMethods {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
 		
-		Calendar newCalendar = new Calendar();
+		Calendars newCalendar = new Calendars();
 		newCalendar.setId(user.getId());
 		newCalendar.setEditableByOther(true);
 
@@ -131,7 +131,7 @@ public class UsersMethods {
 		
 		//Remove associated calendar
 		@SuppressWarnings("unchecked")
-		Calendar calendar = (Calendar) em.createNativeQuery("SELECT * from calendars WHERE calendars.user_id =? ", User.class)
+		Calendars calendar = (Calendars) em.createNativeQuery("SELECT * from calendars WHERE calendars.user_id =? ", User.class)
 			.setParameter(1, userD.getId())
 			.getSingleResult();
 			

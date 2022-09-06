@@ -83,6 +83,7 @@ System.out.println(event);
 			event.setIdCalendar(user.getCalendar());
 			em.persist(event);
 			transac = true;
+			
 		}
 		finally {
 			if (transac) {
@@ -143,10 +144,9 @@ System.out.println(event);
 		EntityManager em = factory.createEntityManager();
 
 		System.out.println(event);
-		System.out.println(event.getId());
-		//Event event = em.find(Event.class,event.getId());
+		Integer idN = Integer.parseInt(id);
 		
-		Event updateEvent = em.find(Event.class, event.getId());
+		Event updateEvent = em.find(Event.class, idN);
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
@@ -155,8 +155,7 @@ System.out.println(event);
 			updateEvent.setStartTimeEvent(event.getStartTimeEvent());
 			updateEvent.setEndTimeEvent(event.getEndTimeEvent());
 			updateEvent.setDescription(event.getDescription());
-			updateEvent.setIdCalendar(event.getIdCalendar());
-
+			
 
 				transac=true;
 		}finally {

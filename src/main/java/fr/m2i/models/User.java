@@ -1,8 +1,11 @@
 package fr.m2i.models;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+
 import fr.m2i.models.Calendars;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -12,7 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,10 +29,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name="users")
-//@NamedNativeQueries({
-//		  @NamedNativeQuery(name="nom", query="requete :param"),
-	
-//})
 public class User{
 	
 	@Id
@@ -93,6 +94,11 @@ public class User{
 	@Basic
 	@Column(name="active")
 	private boolean active;
+
+	/*
+	@OneToMany( targetEntity=Shares.class, mappedBy="user")
+    private List<Shares> shares = new ArrayList<>();
+	*/
 	
 	
 	
@@ -216,24 +222,17 @@ public class User{
 	}
 	public void setSuperAdmin(boolean superAdmin) {
 		this.superAdmin = superAdmin;
-	}
-	
-	
+	}	
 	public boolean getCanShare() {
 		return this.canShare;
 	}
 	public void setCanShare(boolean canShare) {
 		this.canShare = canShare;
 	}
-	
-	
 	public boolean getActive() {
 		return this.active;
 	}
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-
 }
-

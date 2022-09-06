@@ -1,5 +1,6 @@
 package fr.m2i.models;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +28,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name="calendars")
 public class Calendars {
 
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private Integer id;
 	
+
 	
 	@JsonManagedReference 
 	@OneToMany(targetEntity = Event.class, mappedBy= "idCalendar", fetch = FetchType.EAGER )//
@@ -43,6 +46,17 @@ public class Calendars {
 	@JoinColumn(name="user_id", nullable=false)//
 	private User user_id;
 	
+  	@Basic
+	@Column(name="editable_by_other")
+	private boolean editableByOther;
+	
+		public boolean isEditableByOther() {
+		return editableByOther;
+	}
+
+	public void setEditableByOther(boolean editableByOther) {
+		this.editableByOther = editableByOther;
+	}
 
 	public User getUser_id() {
 		return user_id;

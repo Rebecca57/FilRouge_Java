@@ -3,6 +3,7 @@ package fr.m2i.filtre;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,14 +16,14 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.mapping.Map;
+
 import com.nimbusds.jose.JOSEException;
 
 import methods.TokenMethods;
 
-/**
- * Servlet Filter implementation class LoginFilter
- */
-@WebFilter(urlPatterns="/api/users/login")
+//FILTER FOR LOGIN - no token needed
+@WebFilter(urlPatterns={"/api/users/login"})
 public class LoginFilter extends HttpFilter implements Filter {
        
 	private static final long serialVersionUID = 1L;
@@ -55,9 +56,13 @@ public class LoginFilter extends HttpFilter implements Filter {
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
+        java.util.Map<String, String[]> param = httpRequest.getParameterMap();
+        String query = httpRequest.getQueryString();
+        System.out.println(query);
+        System.out.println(param);
         /**
 		String headerName="";
-		Enumeration<String> body = httpRequest.getParameterNames();
+		Enumeration<String> body = httpRequest.getParameterNames(); 
 		System.out.println(body);
 	    if (headerNames != null) {
 	            while (headerNames.hasMoreElements()) {

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import fr.m2i.models.Calendars;
 import fr.m2i.models.ImageBlob;
 import fr.m2i.models.User;
 
@@ -57,7 +58,6 @@ public class UsersMethods {
 		
 		for (User user: listeUsers) {
 			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword()) && user.getActive()) {
-				TokenMethods.issueToken(user);
 				user.setPassword(null);
 				return user;
 			}
@@ -88,11 +88,16 @@ public class UsersMethods {
 		System.out.println(user);
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
+		
+		Calendars newCalendar = new Calendars();
+		newCalendar.setId(user.getId());
+		newCalendar.setEditableByOther(true);
 
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
 			em.persist(user);
+			em.persist(newCalendar);
 			transac = true;
 		}
 		finally {
@@ -123,11 +128,18 @@ public class UsersMethods {
 		System.out.println(user);
 		System.out.println(user.getId());
 		User userD = em.find(User.class,user.getId());
+		
+		//Remove associated calendar
+		@SuppressWarnings("unchecked")
+		Calendars calendar = (Calendars) em.createNativeQuery("SELECT * from calendars WHERE calendars.user_id =? ", User.class)
+			.setParameter(1, userD.getId())
+			.getSingleResult();
 			
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
 			em.remove(userD);
+			em.remove(calendar);
 			transac=true;
 		}finally {
 			if (transac) {
@@ -275,10 +287,6 @@ public class UsersMethods {
 		updateUser.setPassword(null);
 		
 		return updateUser;
-	}
-
-
-	
-	
+	}	
 
 }

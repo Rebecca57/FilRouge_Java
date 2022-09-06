@@ -23,29 +23,19 @@ import methods.TokenMethods;
 @WebFilter(urlPatterns={"/api/users/get","/api/users/update"})
 public class UserFilter extends HttpFilter implements Filter {
        
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-     * @see HttpFilter#HttpFilter()
-     */
+
     public UserFilter() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see Filter#destroy()
-	 */
+
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		Enumeration<String> headerNames = httpRequest.getHeaderNames();	

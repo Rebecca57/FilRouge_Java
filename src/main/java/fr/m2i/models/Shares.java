@@ -35,6 +35,10 @@ public class Shares {
 	@Column(name="share")
 	private Calendar calendar;*/
 	
+	public Integer getId() {
+		return id;
+	}
+
 	@Basic
 	@Column(name="calendar_id")
 	private Integer calendarId;

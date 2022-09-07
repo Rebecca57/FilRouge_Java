@@ -100,10 +100,8 @@ public class User{
     private List<Shares> shares = new ArrayList<>();
 	*/
 	
-	
-	
 	//@JsonManagedReference 
-	@OneToOne(targetEntity = Calendars.class , mappedBy="user_id", fetch = FetchType.EAGER )//
+	@OneToOne(targetEntity = Calendars.class , mappedBy="user_id", fetch = FetchType.EAGER, cascade=CascadeType.ALL)//
 	private Calendars calendar;
 	
 

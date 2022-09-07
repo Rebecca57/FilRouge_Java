@@ -29,14 +29,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name="calendars")
 public class Calendars {
 
-
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private Integer id;
-	
-
 	
 	@JsonManagedReference 
 	@OneToMany(targetEntity = Event.class, mappedBy= "idCalendar", fetch = FetchType.EAGER )//
@@ -44,7 +40,7 @@ public class Calendars {
 	
 	@OneToOne
 	@JsonBackReference
-	@JoinColumn(name="user_id")//, nullable=false
+	@JoinColumn(name="user_id")//
 	private User user_id;
 	
   	@Basic

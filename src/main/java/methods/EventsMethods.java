@@ -28,7 +28,6 @@ public class EventsMethods {
 
 		em.close();
 		System.out.println("GET ALL EVENTS");
-		System.out.println(eventsList.get(0));
 		return eventsList;
 	}
 	
@@ -156,7 +155,7 @@ System.out.println(event);
 			updateEvent.setEndTimeEvent(event.getEndTimeEvent());
 			updateEvent.setDescription(event.getDescription());
 			transac=true;
-			
+
 		}finally {
 			if (transac) {
 				em.getTransaction().commit();

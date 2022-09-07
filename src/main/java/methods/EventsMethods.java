@@ -28,7 +28,6 @@ public class EventsMethods {
 
 		em.close();
 		System.out.println("GET ALL EVENTS");
-		System.out.println(eventsList.get(0));
 		return eventsList;
 	}
 	
@@ -155,7 +154,7 @@ System.out.println(event);
 			updateEvent.setStartTimeEvent(event.getStartTimeEvent());
 			updateEvent.setEndTimeEvent(event.getEndTimeEvent());
 			updateEvent.setDescription(event.getDescription());
-			updateEvent.setIdCalendar(event.getIdCalendar());
+			/**updateEvent.setIdCalendar(event.getIdCalendar());**/
 
 
 				transac=true;

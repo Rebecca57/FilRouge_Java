@@ -127,16 +127,14 @@ public class UsersMethods {
 		User userD = em.find(User.class,user.getId());
 		
 		//Remove associated calendar
-		@SuppressWarnings("unchecked")
-		Calendars calendar = (Calendars) em.createNativeQuery("SELECT * from calendars WHERE calendars.user_id =? ", User.class)
-			.setParameter(1, userD.getId())
-			.getSingleResult();
+		/**Calendars calendar = (Calendars) em.createNativeQuery("SELECT * from calendars WHERE calendars.user_id =?1 ")
+			.setParameter(1, user.getId())
+			.getSingleResult();**/
 			
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
 			em.remove(userD);
-			em.remove(calendar);
 			transac=true;
 		}finally {
 			if (transac) {

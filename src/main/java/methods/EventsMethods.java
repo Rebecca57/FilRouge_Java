@@ -58,31 +58,23 @@ public class EventsMethods {
 		return eventsList;
 	}*/
 	
-	//ADD A USER IN TH DB
+	//ADD AN EVENT IN THE DB
 	public static ArrayList<Event> add(Event event, String id) {
-		
-		System.out.println(event);
+
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
-System.out.println(event);
+		
+		//Début de la transaction
 		boolean transac = false;
 		try {
 			em.getTransaction().begin();
-			 /*em.createNativeQuery("INSERT INTO events(name, date, start_time, end_time, description) VALUES ('?','?','?','?','?') WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?", Event.class)
-			.setParameter(1,event.getNameEvent())	
-			.setParameter(2,event.getDateEvent())
-			.setParameter(3,event.getStartTimeEvent())
-			.setParameter(4,event.getEndTimeEvent())
-			.setParameter(5,event.getDescription())
-			.setParameter(6,id);*/
-			 System.out.println(event);
+			//Récupération de l'utilisateur concerné
 			User user = (User) em.createNativeQuery("SELECT * from users WHERE users.id=?",User.class)
-					.setParameter(1,id)
-					.getSingleResult();
+					.setParameter(1,id).getSingleResult();
 			event.setIdCalendar(user.getCalendar());
+			//Ajout de l'evenement dans le calendrier de l'utilisateur.
 			em.persist(event);
 			transac = true;
-			
 		}
 		finally {
 			if (transac) {
@@ -92,12 +84,12 @@ System.out.println(event);
 				em.getTransaction().rollback();
 			}	
 		}
-		
-	
+		//Récupération de la liste 
 		@SuppressWarnings("unchecked")
-		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id AND users.id=?;", Event.class)
-		.setParameter(1,id)		
-		.getResultList();
+		ArrayList<Event> eventsList = (ArrayList<Event>) em.createNativeQuery("SELECT * from events,calendars,users"
+											+ "WHERE events.calendar_id = calendars.id AND calendars.user_id=users.id"
+											+ "AND users.id=?;", Event.class)
+		.setParameter(1,id).getResultList();
 		em.close();
 		
 		return eventsList;

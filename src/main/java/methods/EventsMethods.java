@@ -27,6 +27,7 @@ public class EventsMethods {
 		.getResultList();
 
 		em.close();
+		factory.close();
 		System.out.println("GET ALL EVENTS");
 		return eventsList;
 	}
@@ -99,6 +100,7 @@ System.out.println(event);
 		.setParameter(1,id)		
 		.getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}
@@ -132,6 +134,7 @@ System.out.println(event);
 		.setParameter(1,id)		
 		.getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}
@@ -170,6 +173,7 @@ System.out.println(event);
 		.setParameter(1,id)		
 		.getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}

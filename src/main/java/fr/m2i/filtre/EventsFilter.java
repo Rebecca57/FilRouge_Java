@@ -1,7 +1,8 @@
 package fr.m2i.filtre;
 
 import java.io.IOException;
-
+import java.text.ParseException;
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,7 +12,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.SignedJWT;
+
+import methods.TokenMethods;
 
 /**
  * Servlet Filter implementation class EventsFilter
@@ -41,12 +48,47 @@ public class EventsFilter extends HttpFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		Enumeration<String> headerNames = httpRequest.getHeaderNames();	
+
+		
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
-		chain.doFilter(request, response);
+
+		String headerName="";
+		Enumeration<String> body = httpRequest.getParameterNames();
+		System.out.println(body);
+	    if (headerNames != null) {
+	            while (headerNames.hasMoreElements()) {
+	            	headerName=headerNames.nextElement();
+	            	String headerValue = httpRequest.getHeader(headerName);
+                    System.out.print("Name "+headerName);
+	            	System.out.print("Value "+headerValue+"\n");
+	            	
+
+	            	if (headerName.equals("authorization") ) {
+	            		
+            			String token = headerValue.substring("Bearer ".length());
+            			System.out.println(token);
+            			try {
+							boolean valid = TokenMethods.validateToken(token);
+							if (valid) {
+					        	chain.doFilter(request, response);
+							}
+							
+						} catch (JOSEException | ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	                    
+	            	}
+
+	            }
+	            
+	    }
+	
 	}
 
 	/**

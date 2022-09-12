@@ -26,7 +26,8 @@ public class ShareCalendarMethods {
 			.getResultList();
 
 		em.close();
-		factory.close();
+
+
 
 		return listeContacts;
 	}

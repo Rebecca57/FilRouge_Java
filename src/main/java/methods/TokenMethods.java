@@ -59,7 +59,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class TokenMethods {
 	
-	public static String issueToken(User user) {  
+	public String issueToken(User user) {  
 		
         try {
         	
@@ -95,7 +95,7 @@ public class TokenMethods {
         return null;        
 	}
             
-        public static boolean validateToken(String token) throws JOSEException, ParseException { 
+        public boolean validateToken(String token) throws JOSEException, ParseException { 
             //Validation
             /**ECKey key3 = new ECKeyGenerator(Curve.P_256)
                     .keyID("1")
@@ -131,52 +131,5 @@ public class TokenMethods {
           
     }
 
-        
-        public static Map<String, Object> getClaimsToken (String token) throws JOSEException, ParseException{
-        	ECKey newKey = PrivateKey.getInstance().getKey();
-        	
-        	//JWTConsumer jwtConsumer = new JwtConsumerBuilder()
-        	
-        	 /*let decodedJWT = SignedJWT.parse(Token);
-             var header = decodedJWT.getHeader().toString();
-             var payload = decodedJWT.getPayload().toString();*/
-        	
-        	//Map<String, Object> claims = this.claimSetConverter.convert(JWTClaimsSet.parse(token).getClaims());
-        	
-        	JWTClaimsSet decodedJWT = JWTClaimsSet.parse(token);
-        	Map<String, Object> claims = decodedJWT.getClaims();
-        	
-        	/*String payload1 = decodedJWT.getPayload() .toString(); 
-        	decodedJWT.
-        	
-        	Map<String, Object> claims= JWTClaimsSet.parse(token).getClaims();
-        	System.out.println(JWTClaimsSet.parse(token).getClaims());*/
-        	
-        	return claims;
-        	
-        	//Claims tokenClaims=  	JWTClaimsSet.parse(token).getClaims();
-        	
-        	//tokenClaims= this.claimeSetCo JWTClaimsSet.parse(token).getClaims()
-        	
-        	//SignedJWT decodedJWT = SignedJWT.parse(token);
-        	//decodedJWT.getPayload().
-          
-                     //Decode
-           /* if (isValid) {
-            	SignedJWT decodedJWT = SignedJWT.parse(token);
-                String header1 = decodedJWT.getHeader().toString();
-                System.out.println(header1);
-                String payload1 = decodedJWT.getPayload().toString();  
-                System.out.println(payload1);
-                
-                //test cliams
-                JWTClaimsSet decodJWT = JWTClaimsSet.parse(token);
-            	Map<String, Object> claims =decodJWT.getClaims();*/
-        	
-        }
-
-
-      //JWTClaimsSet decodedJWT = JWTClaimsSet.parse(token);
-	
 
 }

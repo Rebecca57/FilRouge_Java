@@ -31,7 +31,7 @@ public class UsersResource {
 	
 	public static ArrayList<User> listeTaches = new ArrayList<User>();
 	public UsersMethods umethod = new UsersMethods();
-	
+	public TokenMethods tm = new TokenMethods();
 
 	//Récupérer la liste des users
 	@SuppressWarnings("hiding")
@@ -60,7 +60,7 @@ public class UsersResource {
 			//Set token in the response Header 
 			HttpHeaders responseHeaders = new HttpHeaders();
 		    responseHeaders
-		    	.set("authorization",TokenMethods.issueToken(body));
+		    	.set("authorization",tm.issueToken(body));
 			return ResponseEntity.ok()
 				      .headers(responseHeaders)
 				      //and User in the responsebody
@@ -84,7 +84,7 @@ public class UsersResource {
 	public ArrayList<User> add(User user){
 		System.out.println("Injected USER");
 		System.out.println(user);
-		return UsersMethods.add(user);
+		return umethod.add(user);
 	}
 	
 	//Delete an user
@@ -95,7 +95,7 @@ public class UsersResource {
 	public ArrayList<User> delete(User user){
 		System.out.println("Injected USER");
 		System.out.println(user.getClass());
-		return UsersMethods.delete(user);
+		return umethod.delete(user);
 	}
 	
 	//Update an user 
@@ -104,7 +104,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> update(User user,@PathParam("id") Integer id ){
-		return UsersMethods.update(user);
+		return umethod.update(user);
 	}
 	
 	@PUT
@@ -112,7 +112,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> updateFieldActive(User user){
-		return UsersMethods.updateField(user.getId(),"active",user.getActive());
+		return umethod.updateField(user.getId(),"active",user.getActive());
 	}
 	
 	@PUT
@@ -120,7 +120,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> updateFieldCanShare(User user){
-		return UsersMethods.updateField(user.getId(),"canShare",user.getCanShare());
+		return umethod.updateField(user.getId(),"canShare",user.getCanShare());
 	}
 	
 	@PUT
@@ -128,32 +128,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> updateFieldAccessRight(User user){
-		return UsersMethods.updateFieldAR(user.getId(),user.getAccessRight(), user.getSuperAdmin());
+		return umethod.updateFieldAR(user.getId(),user.getAccessRight(), user.getSuperAdmin());
 	}
-
-	/**
-	//Ajouter une tache dans la liste
-	@POST
-	@Path("/all")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public static void add(@FormParam("nom") String nom,
-			@FormParam("desc") String desc,
-			@FormParam("date") String date) {
-		Tache newTache = new Tache(nom,desc,date);
-		System.out.println("POST method add: "+newTache);
-		TachesRessource.listeTaches.add(newTache);
-	}
-	
-	//Supprimer une tache
-	@DELETE
-	@Path("/tache/{id}")
-	@Produces({MediaType.APPLICATION_JSON})
-	public static void delete(@PathParam("id") int id) {
-		for (int i =0; i<listeTaches.size();i++) {
-			TachesRessource.listeTaches.remove(id);
-		}
-		System.out.println(listeTaches.size());
-	}
-	**/
 
 }

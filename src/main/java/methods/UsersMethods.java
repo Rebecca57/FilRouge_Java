@@ -14,6 +14,8 @@ public class UsersMethods {
 	
 	public User login(User userEntered) {
 		
+		
+		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
 
@@ -27,6 +29,7 @@ public class UsersMethods {
 		for (User user: listeUsers) {
 			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword()) && user.getActive()) {
 				user.setPassword(null);
+				user.setBirthday(null);
 				return user;
 			}
 		}
@@ -52,7 +55,7 @@ public class UsersMethods {
 	}
 	
 	//ADD A USER IN THE DB
-	public static ArrayList<User> add(User user) {
+	public ArrayList<User> add(User user) {
 		
 		System.out.println(user);
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
@@ -90,13 +93,11 @@ public class UsersMethods {
 	
 	
 	//DELETE A USER IN THE DB
-	public static ArrayList<User> delete(User user){
+	public ArrayList<User> delete(User user){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
 
-		System.out.println(user);
-		System.out.println(user.getId());
 		User userD = em.find(User.class,user.getId());
 		
 		//Remove associated calendar
@@ -127,7 +128,7 @@ public class UsersMethods {
 	}
 	
 	//UPDATE AN USER IN THE DB
-	public static ArrayList<User> update(User user){
+	public ArrayList<User> update(User user){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -173,7 +174,7 @@ public class UsersMethods {
 	
 	
 	//UPDATE AN USER FIELD
-	public static ArrayList<User> updateField(Integer id, String field, boolean value){
+	public ArrayList<User> updateField(Integer id, String field, boolean value){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -212,7 +213,7 @@ public class UsersMethods {
 		return usersList;
 	}
 	
-	public static ArrayList<User> updateFieldAR(Integer id, String value, boolean superAdmin){
+	public ArrayList<User> updateFieldAR(Integer id, String value, boolean superAdmin){
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();

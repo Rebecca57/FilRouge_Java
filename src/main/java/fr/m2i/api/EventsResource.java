@@ -28,6 +28,7 @@ import methods.UsersMethods;
 public class EventsResource {
 	
 	public static ArrayList<Event> listeTaches = new ArrayList<Event>();
+	public EventsMethods eMethod = new EventsMethods();
 	
 	//Récupérer la liste des Events
 	@POST
@@ -35,7 +36,7 @@ public class EventsResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
 	public ArrayList<Event> display(String ide,@QueryParam("id") String id){
-		return EventsMethods.display(id);
+		return eMethod.display(id);
 	}
 	
 	
@@ -45,7 +46,7 @@ public class EventsResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<Event> add(Event event,@QueryParam("id") String id){	
-		return EventsMethods.add(event,id);
+		return eMethod.add(event,id);
 	}
 	
 	//Delete an Event
@@ -56,7 +57,7 @@ public class EventsResource {
 	public ArrayList<Event> delete(Event Event,@QueryParam("id") String id){
 		System.out.println("Injected Event");
 		System.out.println(Event.getClass());
-		return EventsMethods.delete(Event, id);
+		return eMethod.delete(Event, id);
 	}
 	
 	//Update an Event 
@@ -65,7 +66,7 @@ public class EventsResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<Event> update(Event Event,@QueryParam("id") String id){
-		return EventsMethods.update(Event, id );
+		return eMethod.update(Event, id );
 	}
 
 }

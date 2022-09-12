@@ -27,6 +27,7 @@ public class EventsMethods {
 		.getResultList();
 
 		em.close();
+		factory.close();
 		System.out.println("GET ALL EVENTS");
 		return eventsList;
 	}
@@ -91,6 +92,7 @@ public class EventsMethods {
 											+ "AND users.id=?;", Event.class)
 		.setParameter(1,id).getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}
@@ -124,6 +126,7 @@ public class EventsMethods {
 		.setParameter(1,id)		
 		.getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}
@@ -162,6 +165,7 @@ public class EventsMethods {
 		.setParameter(1,id)		
 		.getResultList();
 		em.close();
+		factory.close();
 		
 		return eventsList;
 	}

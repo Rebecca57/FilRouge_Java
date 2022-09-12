@@ -11,38 +11,8 @@ import fr.m2i.models.User;
 
 public class UsersMethods {
 	
-	//@Resource(name="dataSource")
-	//private DataSource dataSource;
 	
-	public static ArrayList<ImageBlob> addImage(ImageBlob blob) {
-		System.out.println(blob);
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
-		EntityManager em = factory.createEntityManager();
-
-		boolean transac = false;
-		try {
-			em.getTransaction().begin();
-			em.persist(blob);
-			transac = true;
-		}
-		finally {
-			if (transac) {
-				em.getTransaction().commit();
-			}
-			else {
-				em.getTransaction().rollback();
-			}
-		}
-		
-		@SuppressWarnings("unchecked")
-		ArrayList<ImageBlob> imagesList = (ArrayList<ImageBlob>) em.createNativeQuery("SELECT * from images", ImageBlob.class)
-				.getResultList();
-		em.close();
-		
-		return imagesList;
-	}
-	
-	public static User login(User userEntered) {
+	public User login(User userEntered) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -52,6 +22,7 @@ public class UsersMethods {
 				.getResultList();
 
 		em.close();
+		factory.close();
 		
 		for (User user: listeUsers) {
 			if (user.getEmail().equals(userEntered.getEmail()) && user.getPassword().equals(userEntered.getPassword()) && user.getActive()) {
@@ -63,7 +34,7 @@ public class UsersMethods {
 		return null;	
 	}
 	
-	public static ArrayList<User> display() {
+	public ArrayList<User> display() {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -74,6 +45,7 @@ public class UsersMethods {
 
 		listeUsers.stream().forEach((User user) -> user.setPassword(null));
 		em.close();
+		factory.close();
 		System.out.println("LISTE USERS");
 		System.out.println("listeUsers");
 		return listeUsers;
@@ -110,6 +82,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		factory.close();
 		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		
 		return usersList;
@@ -148,6 +121,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		factory.close();
 		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		return usersList;
 	}
@@ -190,6 +164,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		factory.close();
 		usersList.stream().forEach((User userN) -> userN.setPassword(null));
 		
 		return usersList;
@@ -231,6 +206,7 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		factory.close();
 		usersList.stream().forEach((User user) -> user.setPassword(null));
 		
 		return usersList;
@@ -266,12 +242,13 @@ public class UsersMethods {
 		ArrayList<User> usersList = (ArrayList<User>) em.createNativeQuery("SELECT * from users", User.class)
 				.getResultList();
 		em.close();
+		factory.close();
 		usersList.stream().forEach((User user) -> user.setPassword(null));
 		
 		return usersList;
 	}
 
-	public static User getUser(User user) {
+	public User getUser(User user) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -279,6 +256,7 @@ public class UsersMethods {
 			User updateUser = em.find(User.class, user.getId());
 		
 		em.close();
+		factory.close();
 		updateUser.setPassword(null);
 		
 		return updateUser;

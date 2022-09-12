@@ -30,14 +30,8 @@ public class UsersResource {
 	
 	
 	public static ArrayList<User> listeTaches = new ArrayList<User>();
+	public UsersMethods umethod = new UsersMethods();
 	
-	@POST
-	@Path("/addImage")
-	@Produces({MediaType.APPLICATION_JSON})
-	@Consumes({MediaType.APPLICATION_JSON})
-	public ArrayList<ImageBlob> addImage(ImageBlob blob) {
-		return UsersMethods.addImage(blob);
-	}
 
 	//Récupérer la liste des users
 	@SuppressWarnings("hiding")
@@ -45,24 +39,31 @@ public class UsersResource {
 	@Path("/all")
 	@Produces({MediaType.APPLICATION_JSON})
 	public ArrayList<User> display(){
-		return UsersMethods.display();
+		return umethod.display();
 	}
 	
+	
+	//Login method called
 	@POST
 	@Path("/login")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ResponseEntity<User> login(User user){
-		User body = UsersMethods.login(user);
+		
+		//get the user if exists 
+		User body = umethod.login(user);
+		//No user with these email/password access
 		if (body == null){
-			System.out.println(body);
 			return null;
+		//User found
 		}else {
-			System.out.println(body);
+			//Set token in the response Header 
 			HttpHeaders responseHeaders = new HttpHeaders();
-		    responseHeaders.set("authorization",TokenMethods.issueToken(body));
+		    responseHeaders
+		    	.set("authorization",TokenMethods.issueToken(body));
 			return ResponseEntity.ok()
 				      .headers(responseHeaders)
+				      //and User in the responsebody
 				      .body(body);			
 		}	
 	}
@@ -72,7 +73,7 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public User getUser(User user){
-		return UsersMethods.getUser(user);
+		return umethod.getUser(user);
 	}
 	
 	//Récupérer la liste des users

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.SignedJWT;
 
 import methods.TokenMethods;
 
@@ -43,37 +44,34 @@ public class UserFilter extends HttpFilter implements Filter {
 		
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
-        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, Authorization");//Client-Security-Token
+        ((HttpServletResponse)response).setHeader("Access-Control-Allow-Headers","origin, content-type, accept, authorization");//Client-Security-Token
         ((HttpServletResponse)response).setHeader( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
 
 		String headerName="";
-		//Enumeration<String> body = httpRequest.getParameterNames();
-		//System.out.println(body);
-	    if (headerNames != null) {
-	            while (headerNames.hasMoreElements()) {
-	            	headerName=headerNames.nextElement();
-	            	String headerValue = httpRequest.getHeader(headerName);
-                    System.out.print(headerName+" : ");
-	            	System.out.print(headerValue+"\n");
-	            	
-	            	if (headerName.equals("authorization") ) {
-	            		
-            			String token = headerValue.substring("Bearer ".length());
-            			System.out.println(token);
-            			try {
-							TokenMethods.validateToken(token);
-						} catch (JOSEException | ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	                    
-	            	}
 
-	            }
-	            
-	    }
-	
-	    chain.doFilter(request, response);
+	    if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+            	
+            	headerName=headerNames.nextElement();
+            	String headerValue = httpRequest.getHeader(headerName);
+            	
+            	if (headerName.equals("authorization") ) {
+            		
+        			String token = headerValue.substring("Bearer ".length());
+        			System.out.println(token);
+        			try {
+						boolean valid = TokenMethods.validateToken(token);
+						if (valid) {
+				        		chain.doFilter(request, response);
+						}
+						
+					} catch (JOSEException | ParseException e) {
+						e.printStackTrace();
+					}	                    
+            	}
+            }   
+	    }	
 	}
 
 	/**
@@ -82,5 +80,7 @@ public class UserFilter extends HttpFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
 	}
+	
+
 
 }

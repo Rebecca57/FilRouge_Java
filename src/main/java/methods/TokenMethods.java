@@ -56,45 +56,32 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+
 public class TokenMethods {
-	
-	//private PrivateKey key;
-	
 	
 	public static String issueToken(User user) {  
 		
         try {
         	
-        	System.out.println("TOKEN IS GENERATED");
-        	System.out.println(user.getSuperAdmin());
-            ECKey key = new ECKeyGenerator(Curve.P_256)
-               .keyID("1")
-               .generate();
-            
+        	//Private key generation
+            ECKey key = new ECKeyGenerator(Curve.P_256).keyID("1") .generate();
+            //Private key loead in Singleton
             PrivateKey.getInstance().setKey(key);
+            //Header definition
             JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256)
                        .type(JOSEObjectType.JWT)
                        .keyID(key.getKeyID())
                        .build();
-            System.out.println("KEY");
-            System.out.println(key);
             
+            //ClaimSet definition
             JWTClaimsSet payload = new JWTClaimsSet.Builder()
-                       //.issuer(uriInfo.getAbsolutePath().toString())
                        .issueTime(new Date())
-
                        .subject("logged user")
                        .expirationTime(Date.from(Instant.now().plusSeconds(600)))
-                       //.issuer("localhost:4200")
-                       .claim("id", user.getId())
-                       .claim("email", user.getEmail())
-                       .claim("firstname", user.getFirstname())
-                       .claim("lastname", user.getLastname())
                        .claim("accessRight", user.getAccessRight())
-                       .claim("superAdmin", user.getSuperAdmin())
                        .build();
             
-            
+            //Signed token generation
             SignedJWT signedJWT = new SignedJWT(header, payload);
             signedJWT.sign(new ECDSASigner(key.toECPrivateKey()));
             String jwtToken = signedJWT.serialize();
@@ -105,9 +92,8 @@ public class TokenMethods {
             System.out.println(e);
         }
         
-        return null;
-            
-        }
+        return null;        
+	}
             
         public static boolean validateToken(String token) throws JOSEException, ParseException { 
             //Validation

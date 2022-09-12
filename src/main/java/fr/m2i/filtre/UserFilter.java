@@ -25,7 +25,7 @@ import methods.TokenMethods;
 public class UserFilter extends HttpFilter implements Filter {
        
 	private static final long serialVersionUID = 1L;
-
+	public TokenMethods tm = new TokenMethods();
 
     public UserFilter() {
         super();
@@ -61,7 +61,7 @@ public class UserFilter extends HttpFilter implements Filter {
         			String token = headerValue.substring("Bearer ".length());
         			System.out.println(token);
         			try {
-						boolean valid = TokenMethods.validateToken(token);
+						boolean valid = tm.validateToken(token);
 						if (valid) {
 				        		chain.doFilter(request, response);
 						}

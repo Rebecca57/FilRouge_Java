@@ -15,7 +15,7 @@ public class EventsMethods {
 	//@Resource(name="dataSource")
 	//private DataSource dataSource;
 	
-	public static ArrayList<Event> display(String id) {
+	public ArrayList<Event> display(String id) {
 		
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -60,7 +60,7 @@ public class EventsMethods {
 	}*/
 	
 	//ADD A USER IN TH DB
-	public static ArrayList<Event> add(Event event, String id) {
+	public ArrayList<Event> add(Event event, String id) {
 		
 		System.out.println(event);
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
@@ -107,7 +107,7 @@ System.out.println(event);
 	
 	
 	//DELETE A USER IN THE DB
-	public static ArrayList<Event> delete(Event event, String id){
+	public ArrayList<Event> delete(Event event, String id){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();
@@ -140,7 +140,7 @@ System.out.println(event);
 	}
 	
 	//UPDATE AN USER IN THE DB
-	public static ArrayList<Event> update(Event event, String id){
+	public ArrayList<Event> update(Event event, String id){
 			
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("UnityPersist");
 		EntityManager em = factory.createEntityManager();

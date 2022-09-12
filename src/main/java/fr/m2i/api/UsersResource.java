@@ -82,8 +82,6 @@ public class UsersResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
 	public ArrayList<User> add(User user){
-		System.out.println("Injected USER");
-		System.out.println(user);
 		return umethod.add(user);
 	}
 	
@@ -103,7 +101,7 @@ public class UsersResource {
 	@Path("/update")
 	@Produces({MediaType.APPLICATION_JSON})
 	@Consumes({MediaType.APPLICATION_JSON})
-	public ArrayList<User> update(User user,@PathParam("id") Integer id ){
+	public ArrayList<User> update(User user){
 		return umethod.update(user);
 	}
 	

@@ -63,5 +63,115 @@ public class UserResourceTest {
 			assertThat(result).isEqualTo(repUser);
 		}
 		
+		@Test
+		public void testadd() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.add(user)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.add(user);
+					
+			// THEN
+			verify(um).add(user);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		@Test
+		public void testdelete() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.delete(user)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.delete(user);
+					
+			// THEN
+			verify(um).delete(user);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		@Test
+		public void testUpdate() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.update(user)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.update(user);
+					
+			// THEN
+			verify(um).update(user);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		@Test
+		public void testUpdateFieldC() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			user.setId(1);
+			user.setCanShare(true);
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.updateField(1,"canShare",true)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.updateFieldCanShare(user);
+					
+			// THEN
+			verify(um).updateField(1,"canShare",true);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		@Test
+		public void testUpdateFieldA() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			user.setId(1);
+			user.setActive(true);
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.updateField(1,"active",true)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.updateFieldActive(user);
+					
+			// THEN
+			verify(um).updateField(1,"active",true);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		@Test
+		public void testUpdateFieldAR() throws Exception {
+			
+			// GIVEN
+			User user = new User();
+			user.setId(1);
+			user.setAccessRight("Administrator");
+			user.setSuperAdmin(true);
+			ArrayList<User> listeUsers = new ArrayList<User>();
+			listeUsers.add(new User());
+			when(um.updateFieldAR(1,"Administrator",true)).thenReturn(listeUsers);	
+
+			// WHEN
+			final ArrayList<User> result = ur.updateFieldAccessRight(user);
+					
+			// THEN
+			verify(um).updateFieldAR(1,"Administrator",true);
+			assertThat(result).isEqualTo(listeUsers);
+		}
+		
+		
 
 }
